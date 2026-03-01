@@ -92,7 +92,6 @@ interface NoteDetailModalProps {
     isOpen: boolean;
     onClose: () => void;
     onEdit: () => void;
-    onPin: () => void;
 }
 
 const NoteDetailModal: React.FC<NoteDetailModalProps> = ({
@@ -100,7 +99,6 @@ const NoteDetailModal: React.FC<NoteDetailModalProps> = ({
     isOpen,
     onClose,
     onEdit,
-    onPin,
 }) => {
     if (!isOpen) return null;
 
@@ -276,7 +274,7 @@ const NotesPage: React.FC = () => {
     const [selectedNote, setSelectedNote] = useState<Note | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
     const [isAddOpen, setIsAddOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm] = useState('');
 
     // Filter notes based on search
     const filteredNotes = notes.filter(

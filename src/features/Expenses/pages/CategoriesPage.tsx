@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Plus, Edit2, Trash2 } from 'lucide-react';
-import { Card, CardHeader, CardBody } from '../../../design-system/components/atoms/Card';
+import { Card, CardBody } from '../../../design-system/components/atoms/Card';
 import { Button } from '../../../design-system/components/atoms/Button';
 import { categories, categorySummary } from '../../../data/expensesMockData';
 import { formatCurrency } from '../../../utils/formatters';
@@ -75,8 +75,8 @@ const CategoriesPage: React.FC = () => {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === tab
-                                ? 'bg-brand-primary text-white'
-                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
+                            ? 'bg-brand-primary text-white'
+                            : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700'
                             }`}
                     >
                         {tab === 'all' ? 'All' : tab === 'income' ? 'Income' : 'Expense'}
@@ -105,8 +105,8 @@ const CategoriesPage: React.FC = () => {
                                             </p>
                                             <span
                                                 className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${category.type === 'income'
-                                                        ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
-                                                        : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                                    ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+                                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
                                                     }`}
                                             >
                                                 {category.type}

@@ -3,11 +3,12 @@ import { type VariantProps } from 'class-variance-authority';
 import { cn } from '../../../foundation/cn';
 import { badgeVariants } from './Badge.variants';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { badgeVariants };
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {
+  VariantProps<typeof badgeVariants> {
   dot?: boolean;
 }
 

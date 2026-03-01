@@ -3,19 +3,20 @@ import { type VariantProps } from 'class-variance-authority';
 import { cn } from '../../../foundation/cn';
 import { inputVariants } from './Input.variants';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { inputVariants };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
-    VariantProps<typeof inputVariants> {
-  label?:      string;
+  VariantProps<typeof inputVariants> {
+  label?: string;
   helperText?: string;
-  errorText?:  string;
-  leftAddon?:  React.ReactNode;
+  errorText?: string;
+  leftAddon?: React.ReactNode;
   rightAddon?: React.ReactNode;
   /** Pass react-hook-form register return */
-  register?:   Record<string, unknown>;
+  register?: Record<string, unknown>;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -70,7 +71,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             }
             className={cn(
               inputVariants({ inputSize, state }),
-              leftAddon  && 'pl-9',
+              leftAddon && 'pl-9',
               rightAddon && 'pr-9',
               className
             )}

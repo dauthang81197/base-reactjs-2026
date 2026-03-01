@@ -4,12 +4,13 @@ import { cn } from '../../../foundation/cn';
 import { LoaderCircle } from 'lucide-react';
 import { buttonVariants } from './Button.variants';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { buttonVariants };
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   loading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;

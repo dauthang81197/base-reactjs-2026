@@ -109,7 +109,7 @@ class AuthService {
             }
 
             return response;
-        } catch (error) {
+        } catch {
             // For demo purposes, simulate successful login
             const mockUser: User = {
                 id: '1',
@@ -147,7 +147,7 @@ class AuthService {
             }
 
             return response;
-        } catch (error) {
+        } catch {
             // For demo purposes, simulate successful registration
             const mockUser: User = {
                 id: '1',
@@ -176,7 +176,7 @@ class AuthService {
     async forgotPassword(data: ForgotPasswordData): Promise<ApiResponse<{ message: string }>> {
         try {
             return await api.post<{ message: string }>('/auth/forgot-password', data);
-        } catch (error) {
+        } catch {
             // For demo purposes, simulate successful request
             return {
                 success: true,
@@ -190,7 +190,7 @@ class AuthService {
     async resetPassword(data: ResetPasswordData): Promise<ApiResponse<{ message: string }>> {
         try {
             return await api.post<{ message: string }>('/auth/reset-password', data);
-        } catch (error) {
+        } catch {
             // For demo purposes, simulate successful reset
             return {
                 success: true,
@@ -224,7 +224,7 @@ class AuthService {
             }
 
             return response;
-        } catch (error) {
+        } catch {
             // For demo purposes, simulate successful unlock
             const mockToken = 'mock_jwt_token_' + Date.now();
 
@@ -245,7 +245,7 @@ class AuthService {
     async logout(): Promise<void> {
         try {
             await api.post('/auth/logout');
-        } catch (error) {
+        } catch {
             // Silent fail - we'll clear local storage anyway
         } finally {
             this.removeToken();
@@ -267,7 +267,7 @@ class AuthService {
     async getCurrentUser(): Promise<ApiResponse<User>> {
         try {
             return await api.get<User>('/auth/me');
-        } catch (error) {
+        } catch {
             const storedUser = this.getStoredUser();
             if (storedUser) {
                 return {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Plus, MoreHorizontal, TrendingUp, TrendingDown } from 'lucide-react';
-import { Card, CardHeader, CardBody } from '../../../design-system/components/atoms/Card';
+import { Card, CardBody } from '../../../design-system/components/atoms/Card';
 import { Button } from '../../../design-system/components/atoms/Button';
 import { wallets, getTotalBalance } from '../../../data/expensesMockData';
 import { formatCurrency } from '../../../utils/formatters';

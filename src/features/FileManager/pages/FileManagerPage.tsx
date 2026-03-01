@@ -18,7 +18,6 @@ import {
     Trash2,
     HardDrive,
     Check,
-    X,
     RefreshCw,
     Plus,
 } from 'lucide-react';
@@ -71,8 +70,8 @@ const FolderTreeItemComponent: React.FC<FolderTreeItemProps> = ({
                     if (hasChildren) setExpanded(!expanded);
                 }}
                 className={`flex items-center gap-2 w-full px-2 py-1.5 rounded-lg text-left text-sm transition-colors ${isSelected
-                        ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'
-                        : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                    ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'
+                    : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                     }`}
                 style={{ paddingLeft: `${level * 16 + 8}px` }}
             >
@@ -123,8 +122,8 @@ const FolderCard: React.FC<FolderCardProps> = ({
         onClick={onSelect}
         onContextMenu={onContextMenu}
         className={`group relative flex flex-col items-center p-4 rounded-xl cursor-pointer transition-all ${isSelected
-                ? 'bg-amber-50 ring-2 ring-amber-400 dark:bg-amber-900/20'
-                : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+            ? 'bg-amber-50 ring-2 ring-amber-400 dark:bg-amber-900/20'
+            : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
             }`}
     >
         <div className="text-6xl mb-2">📁</div>
@@ -146,8 +145,8 @@ const FileCard: React.FC<FileCardProps> = ({ file, isSelected, onSelect }) => (
     <div
         onClick={onSelect}
         className={`group flex flex-col items-center p-4 rounded-xl cursor-pointer transition-all ${isSelected
-                ? 'bg-amber-50 ring-2 ring-amber-400 dark:bg-amber-900/20'
-                : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+            ? 'bg-amber-50 ring-2 ring-amber-400 dark:bg-amber-900/20'
+            : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
             }`}
     >
         <div className="text-5xl mb-2">{getFileIcon(file.type, file.extension)}</div>
@@ -176,8 +175,8 @@ const FileRow: React.FC<FileRowProps> = ({
         onClick={onSelect}
         onContextMenu={onContextMenu}
         className={`cursor-pointer transition-colors ${isSelected
-                ? 'bg-amber-50 dark:bg-amber-900/20'
-                : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
+            ? 'bg-amber-50 dark:bg-amber-900/20'
+            : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/50'
             }`}
     >
         <td className="py-3 px-4">
@@ -265,8 +264,8 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose, onAction }) =>
                             onClose();
                         }}
                         className={`flex items-center gap-3 w-full px-4 py-2 text-sm transition-colors ${item.danger
-                                ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
-                                : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                            ? 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'
+                            : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800'
                             }`}
                     >
                         {item.icon}
@@ -427,7 +426,6 @@ const UploadPanel: React.FC<UploadPanelProps> = ({
     onClose,
     onRetry,
 }) => {
-    const completedCount = uploads.filter((u) => u.status === 'completed').length;
     const totalCount = uploads.length;
     const uploadingCount = uploads.filter((u) => u.status === 'uploading').length;
     const overallProgress = Math.round(
@@ -442,8 +440,8 @@ const UploadPanel: React.FC<UploadPanelProps> = ({
             {/* Header */}
             <div
                 className={`flex items-center justify-between px-4 py-3 cursor-pointer ${variant === 'collapsed'
-                        ? 'bg-green-600 text-white'
-                        : 'border-b border-neutral-200 dark:border-neutral-700'
+                    ? 'bg-green-600 text-white'
+                    : 'border-b border-neutral-200 dark:border-neutral-700'
                     }`}
                 onClick={onToggle}
             >
@@ -636,8 +634,8 @@ const FileManagerPage: React.FC = () => {
                         <button
                             onClick={() => setViewMode('grid')}
                             className={`p-2 ${viewMode === 'grid'
-                                    ? 'bg-neutral-100 dark:bg-neutral-700 text-amber-600'
-                                    : 'text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                                ? 'bg-neutral-100 dark:bg-neutral-700 text-amber-600'
+                                : 'text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800'
                                 }`}
                         >
                             <Grid3X3 className="h-4 w-4" />
@@ -645,8 +643,8 @@ const FileManagerPage: React.FC = () => {
                         <button
                             onClick={() => setViewMode('list')}
                             className={`p-2 ${viewMode === 'list'
-                                    ? 'bg-neutral-100 dark:bg-neutral-700 text-amber-600'
-                                    : 'text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                                ? 'bg-neutral-100 dark:bg-neutral-700 text-amber-600'
+                                : 'text-neutral-500 hover:bg-neutral-50 dark:hover:bg-neutral-800'
                                 }`}
                         >
                             <List className="h-4 w-4" />

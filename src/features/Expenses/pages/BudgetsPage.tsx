@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Plus, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
-import { Card, CardHeader, CardBody } from '../../../design-system/components/atoms/Card';
+import { Card, CardBody } from '../../../design-system/components/atoms/Card';
 import { Button } from '../../../design-system/components/atoms/Button';
 import { budgets, getCategoryById } from '../../../data/expensesMockData';
 import { formatCurrency, formatPercentage } from '../../../utils/formatters';
@@ -76,10 +76,10 @@ const BudgetsPage: React.FC = () => {
                                 <div className="h-3 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
                                     <div
                                         className={`h-full rounded-full transition-all duration-500 ${overallPercentage >= 100
-                                                ? 'bg-red-500'
-                                                : overallPercentage >= 80
-                                                    ? 'bg-amber-500'
-                                                    : 'bg-emerald-500'
+                                            ? 'bg-red-500'
+                                            : overallPercentage >= 80
+                                                ? 'bg-amber-500'
+                                                : 'bg-emerald-500'
                                             }`}
                                         style={{ width: `${Math.min(overallPercentage, 100)}%` }}
                                     />
