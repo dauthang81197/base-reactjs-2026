@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_IMAGE: coursue-frontend
+  DOCKER_IMAGE: flower-frontend
   VPS_HOST: ${{ secrets.VPS_HOST }}
   VPS_USER: ${{ secrets.VPS_USER }}
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
