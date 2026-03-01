@@ -12,6 +12,21 @@ import {
 import { FileManagerPage } from './features/FileManager';
 import { NotesPage } from './features/Notes';
 import { NotFound } from './pages/NotFound';
+import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
+
+// Auth pages
+import {
+  LoginPageV1,
+  LoginPageV2,
+  RegisterPageV1,
+  RegisterPageV2,
+  ForgotPasswordPageV1,
+  ForgotPasswordPageV2,
+  ResetPasswordPageV1,
+  ResetPasswordPageV2,
+  LockScreenPageV1,
+  LockScreenPageV2,
+} from './features/Auth';
 
 // ── Placeholder Pages ─────────────────────────────────────────────────────────
 // These are placeholder components for routes that don't have full implementations yet
@@ -36,8 +51,29 @@ function AppRouter() {
         {/* ── Root redirect ── */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        {/* ── Main Layout with nested routes ── */}
-        <Route element={<MainLayout />}>
+        {/* ── Auth Routes (Public) ── */}
+        {/* Login */}
+        <Route path="/auth/login" element={<PublicRoute><LoginPageV1 /></PublicRoute>} />
+        <Route path="/auth/login-v2" element={<PublicRoute><LoginPageV2 /></PublicRoute>} />
+
+        {/* Register */}
+        <Route path="/auth/register" element={<PublicRoute><RegisterPageV1 /></PublicRoute>} />
+        <Route path="/auth/register-v2" element={<PublicRoute><RegisterPageV2 /></PublicRoute>} />
+
+        {/* Forgot Password */}
+        <Route path="/auth/forgot-password" element={<PublicRoute><ForgotPasswordPageV1 /></PublicRoute>} />
+        <Route path="/auth/forgot-password-v2" element={<PublicRoute><ForgotPasswordPageV2 /></PublicRoute>} />
+
+        {/* Reset Password */}
+        <Route path="/auth/reset-password" element={<PublicRoute><ResetPasswordPageV1 /></PublicRoute>} />
+        <Route path="/auth/reset-password-v2" element={<PublicRoute><ResetPasswordPageV2 /></PublicRoute>} />
+
+        {/* Lock Screen */}
+        <Route path="/auth/lock-screen" element={<LockScreenPageV1 />} />
+        <Route path="/auth/lock-screen-v2" element={<LockScreenPageV2 />} />
+
+        {/* ── Protected Routes (Main Layout) ── */}
+        <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/ecommerce" element={<EcommercePage />} />

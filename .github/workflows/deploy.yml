@@ -1,0 +1,123 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  workflow_dispatch:
+
+env:
+  DOCKER_IMAGE: coursue-frontend
+  VPS_HOST: ${{ secrets.VPS_HOST }}
+  VPS_USER: ${{ secrets.VPS_USER }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # -------- LINT CHECK --------
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      # -------- BUILD IMAGE --------
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub (Optional)
+        if: ${{ env.DOCKER_USERNAME != '' }}
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg VITE_API_URL="${{ secrets.VITE_API_URL }}" \
+            -t $DOCKER_IMAGE:latest .
+          docker save $DOCKER_IMAGE:latest | gzip > image.tar.gz
+
+      # -------- DEPLOY (CHỈ KHI PUSH) --------
+      - name: Prepare SSH key
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ env.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy files to VPS
+        if: ${{ github.event_name == 'push' }}
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.VPS_HOST }}
+          username: ${{ env.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "image.tar.gz,docker-compose.yml"
+          target: "/home/${{ env.VPS_USER }}/flower-frontend"
+
+      - name: Deploy on VPS
+        if: ${{ github.event_name == 'push' }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.VPS_HOST }}
+          username: ${{ env.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /home/${{ env.VPS_USER }}/flower-frontend
+
+            # Load Docker image
+            docker load < image.tar.gz
+            rm image.tar.gz
+
+            # Set environment variables
+            export VITE_API_URL="${{ secrets.VITE_API_URL }}"
+
+            # Deploy
+            docker compose down
+            docker compose up -d
+            docker image prune -f
+
+            # Show status
+            docker compose ps
+
+      - name: Verify deployment
+        if: ${{ github.event_name == 'push' }}
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.VPS_HOST }}
+          username: ${{ env.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            # Wait for container to be ready
+            sleep 10
+
+            # Check if container is running
+            cd /home/${{ env.VPS_USER }}/flower-frontend
+            if docker compose ps | grep -q "Up"; then
+              echo "✅ Deployment successful!"
+              echo "Container status:"
+              docker compose ps
+              echo ""
+              echo "Recent logs:"
+              docker compose logs --tail=50
+            else
+              echo "❌ Deployment failed!"
+              echo "Container status:"
+              docker compose ps
+              echo ""
+              echo "Error logs:"
+              docker compose logs --tail=100
+              exit 1
+            fi

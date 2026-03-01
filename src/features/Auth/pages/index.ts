@@ -1,0 +1,10 @@
+export { default as LoginPageV1 } from './LoginPageV1';
+export { default as LoginPageV2 } from './LoginPageV2';
+export { default as RegisterPageV1 } from './RegisterPageV1';
+export { default as RegisterPageV2 } from './RegisterPageV2';
+export { default as ForgotPasswordPageV1 } from './ForgotPasswordPageV1';
+export { default as ForgotPasswordPageV2 } from './ForgotPasswordPageV2';
+export { default as ResetPasswordPageV1 } from './ResetPasswordPageV1';
+export { default as ResetPasswordPageV2 } from './ResetPasswordPageV2';
+export { default as LockScreenPageV1 } from './LockScreenPageV1';
+export { default as LockScreenPageV2 } from './LockScreenPageV2';
