@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useMemo } from 'react';
-import { Search, Plus, Filter, Download, X } from 'lucide-react';
-import { Card, CardHeader, CardBody } from '../../../design-system/components/atoms/Card';
+import { Search, Plus, Download, X } from 'lucide-react';
+import { Card, CardBody } from '../../../design-system/components/atoms/Card';
 import { Button } from '../../../design-system/components/atoms/Button';
 import { Input } from '../../../design-system/components/atoms/Input';
 import {
@@ -86,8 +86,8 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                             type="button"
                             onClick={() => setType('expense')}
                             className={`flex-1 py-2 rounded-lg font-medium transition-colors ${type === 'expense'
-                                    ? 'bg-red-500 text-white'
-                                    : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
+                                ? 'bg-red-500 text-white'
+                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
                                 }`}
                         >
                             Expense
@@ -96,8 +96,8 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
                             type="button"
                             onClick={() => setType('income')}
                             className={`flex-1 py-2 rounded-lg font-medium transition-colors ${type === 'income'
-                                    ? 'bg-emerald-500 text-white'
-                                    : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
+                                ? 'bg-emerald-500 text-white'
+                                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
                                 }`}
                         >
                             Income

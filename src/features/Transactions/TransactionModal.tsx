@@ -33,19 +33,20 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
     resolver: zodResolver(transactionSchema),
     defaultValues: transaction
       ? {
-          amount: transaction.amount,
-          type: transaction.type,
-          category: transaction.category,
-          note: transaction.note,
-          date: transaction.date.split('T')[0],
-          walletId: transaction.walletId,
-        }
+        amount: transaction.amount,
+        type: transaction.type,
+        category: transaction.category,
+        note: transaction.note,
+        date: transaction.date.split('T')[0],
+        walletId: transaction.walletId,
+      }
       : {
-          type: 'expense',
-          date: new Date().toISOString().split('T')[0],
-        },
+        type: 'expense',
+        date: new Date().toISOString().split('T')[0],
+      },
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const transactionType = watch('type');
   const filteredCategories = categories.filter((c) => c.type === transactionType);
 

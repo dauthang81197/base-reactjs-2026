@@ -4,17 +4,18 @@ import { cn } from '../../../foundation/cn';
 import { Badge } from '../../atoms/Badge';
 import { sidebarItemVariants } from './SidebarItem.variants';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { sidebarItemVariants };
 
 export interface SidebarItemProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof sidebarItemVariants> {
-  icon?:    React.ReactNode;
-  label:    string;
-  badge?:   string | number;
+  VariantProps<typeof sidebarItemVariants> {
+  icon?: React.ReactNode;
+  label: string;
+  badge?: string | number;
   /** Show a colored dot instead of badge text */
-  dot?:     boolean;
-  href?:    string;
+  dot?: boolean;
+  href?: string;
 }
 
 export const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
