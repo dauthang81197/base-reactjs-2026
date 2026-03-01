@@ -12,6 +12,11 @@ import {
   FileText,
   Users,
   X,
+  Wallet,
+  ArrowRightLeft,
+  CreditCard,
+  PieChart,
+  Tags,
 } from 'lucide-react';
 import { Sidebar } from '../design-system/components/organisms/Sidebar';
 import type { NavItem } from '../design-system/components/organisms/Sidebar';
@@ -24,6 +29,18 @@ const mainNav: NavItem[] = [
   { key: '/tasks', label: 'Task', icon: <CheckSquare size={20} /> },
   { key: '/ecommerce', label: 'E-Commerce', icon: <ShoppingCart size={20} /> },
   { key: '/calendar', label: 'Calendar', icon: <Calendar size={20} /> },
+  {
+    key: '/expenses',
+    label: 'Expenses',
+    icon: <Wallet size={20} />,
+    children: [
+      { key: '/expenses', label: 'Overview', icon: <PieChart size={18} /> },
+      { key: '/expenses/transactions', label: 'Transactions', icon: <ArrowRightLeft size={18} /> },
+      { key: '/expenses/wallets', label: 'Wallets', icon: <CreditCard size={18} /> },
+      { key: '/expenses/budgets', label: 'Budgets', icon: <PieChart size={18} /> },
+      { key: '/expenses/categories', label: 'Categories', icon: <Tags size={18} /> },
+    ],
+  },
   { key: '/mail', label: 'Mail', icon: <Mail size={20} />, dot: true },
   { key: '/chat', label: 'Chat', icon: <MessageSquare size={20} /> },
   { key: '/projects', label: 'Projects', icon: <FolderKanban size={20} /> },

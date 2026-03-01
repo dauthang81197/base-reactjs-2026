@@ -2,6 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from './layouts/MainLayout';
 import { DashboardPage } from './pages/Dashboard';
 import { CalendarPage } from './features/Calendar';
+import {
+  ExpenseOverviewPage,
+  TransactionsPage,
+  WalletsPage,
+  BudgetsPage,
+  CategoriesPage,
+} from './features/Expenses';
 import { NotFound } from './pages/NotFound';
 
 // ── Placeholder Pages ─────────────────────────────────────────────────────────
@@ -35,6 +42,14 @@ function AppRouter() {
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/ecommerce" element={<EcommercePage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+
+          {/* ── Expenses routes ── */}
+          <Route path="/expenses" element={<ExpenseOverviewPage />} />
+          <Route path="/expenses/transactions" element={<TransactionsPage />} />
+          <Route path="/expenses/wallets" element={<WalletsPage />} />
+          <Route path="/expenses/budgets" element={<BudgetsPage />} />
+          <Route path="/expenses/categories" element={<CategoriesPage />} />
+
           <Route path="/mail" element={<MailPage />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
