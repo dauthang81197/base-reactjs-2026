@@ -10,6 +10,7 @@ import {
   CategoriesPage,
 } from './features/Expenses';
 import { FileManagerPage } from './features/FileManager';
+import { NotesPage } from './features/Notes';
 import { NotFound } from './pages/NotFound';
 
 // ── Placeholder Pages ─────────────────────────────────────────────────────────
@@ -26,7 +27,6 @@ const EcommercePage = () => <PlaceholderPage title="E-Commerce" />;
 const MailPage = () => <PlaceholderPage title="Mail" />;
 const ChatPage = () => <PlaceholderPage title="Chat" />;
 const ProjectsPage = () => <PlaceholderPage title="Projects" />;
-const NotesPage = () => <PlaceholderPage title="Notes" />;
 const ContactsPage = () => <PlaceholderPage title="Contacts" />;
 
 function AppRouter() {
