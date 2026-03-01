@@ -11,7 +11,7 @@ const meta: Meta<typeof Header> = {
     docs: {
       description: {
         component:
-          'Header navigation của ứng dụng. Bao gồm logo, navigation links, ThemeToggle và mobile menu.',
+          'Header bar 66px hiển thị tiêu đề trang, nút tìm kiếm, thông báo và ThemeToggle.',
       },
     },
   },
@@ -27,19 +27,9 @@ const meta: Meta<typeof Header> = {
 export default meta;
 type Story = StoryObj<typeof Header>;
 
-export const Default: Story = {};
+export const Dashboard: Story = {};
 
-export const OnDashboard: Story = {
-  decorators: [
-    (Story) => (
-      <MemoryRouter initialEntries={['/']}>
-        <Story />
-      </MemoryRouter>
-    ),
-  ],
-};
-
-export const OnTransactions: Story = {
+export const Transactions: Story = {
   decorators: [
     (Story) => (
       <MemoryRouter initialEntries={['/transactions']}>
@@ -49,27 +39,11 @@ export const OnTransactions: Story = {
   ],
 };
 
-export const OnReports: Story = {
+export const Reports: Story = {
   decorators: [
     (Story) => (
       <MemoryRouter initialEntries={['/reports']}>
         <Story />
-      </MemoryRouter>
-    ),
-  ],
-};
-
-export const WithPageBelow: Story = {
-  decorators: [
-    (Story) => (
-      <MemoryRouter initialEntries={['/']}>
-        <div>
-          <Story />
-          <div className="max-w-7xl mx-auto px-4 py-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-            <p className="text-gray-500 mt-2">Welcome back! Here's your financial overview.</p>
-          </div>
-        </div>
       </MemoryRouter>
     ),
   ],

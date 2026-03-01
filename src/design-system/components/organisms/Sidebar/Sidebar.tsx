@@ -71,7 +71,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
         aria-label="Main navigation"
         className={cn(
           'flex flex-col h-full transition-all duration-200',
-          collapsed ? 'w-16' : 'w-60',
+          collapsed ? 'w-16' : 'w-[270px]',
           isDark
             ? 'bg-brand-primary text-white'
             : 'bg-white border-r border-neutral-200 dark:bg-neutral-900 dark:border-neutral-700',
