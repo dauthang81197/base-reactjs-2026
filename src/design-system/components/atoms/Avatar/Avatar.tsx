@@ -56,7 +56,7 @@ const statusVariants = cva(
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface AvatarProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>,
     VariantProps<typeof avatarVariants> {
   src?:    string;
   alt?:    string;
