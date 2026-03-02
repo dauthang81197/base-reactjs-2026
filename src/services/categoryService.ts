@@ -1,30 +1,51 @@
 import { apiClient } from './api';
-import type { Category, ApiResponse } from '../types';
+import type { ApiResponse } from '../types';
+import type { Category, TransactionType } from '../features/Expenses/types';
 
+// ── Category Types ────────────────────────────────────────────────────────────
+export interface CreateCategoryData {
+  name: string;
+  type: TransactionType | 'INCOME' | 'EXPENSE';
+  icon: string;
+  color: string;
+}
+
+// ── Category Service ──────────────────────────────────────────────────────────
 export const categoryService = {
-  // Get all categories
-  async getCategories(): Promise<ApiResponse<Category[]>> {
-    return apiClient.get('/categories');
+  /**
+   * Get all categories
+   * Optional filter by type: INCOME | EXPENSE
+   */
+  async getCategories(type?: TransactionType | 'INCOME' | 'EXPENSE'): Promise<ApiResponse<Category[]>> {
+    return apiClient.get('/expenses/categories', { params: type ? { type: type.toUpperCase() } : undefined });
   },
 
-  // Get categories by type
-  async getCategoriesByType(type: 'income' | 'expense'): Promise<ApiResponse<Category[]>> {
-    return apiClient.get('/categories', { params: { type } });
+  /**
+   * Get categories by type (INCOME or EXPENSE)
+   */
+  async getCategoriesByType(type: 'income' | 'expense' | 'INCOME' | 'EXPENSE'): Promise<ApiResponse<Category[]>> {
+    return apiClient.get('/expenses/categories', { params: { type: type.toUpperCase() } });
   },
 
-  // Create category
-  async createCategory(data: Omit<Category, 'id'>): Promise<ApiResponse<Category>> {
-    return apiClient.post('/categories', data);
+  /**
+   * Create a new category
+   */
+  async createCategory(data: CreateCategoryData): Promise<ApiResponse<Category>> {
+    return apiClient.post('/expenses/categories', data);
   },
 
-  // Update category
-  async updateCategory(id: string, data: Partial<Category>): Promise<ApiResponse<Category>> {
-    return apiClient.put(`/categories/${id}`, data);
+  /**
+   * Update category (partial update)
+   */
+  async updateCategory(id: string, data: Partial<CreateCategoryData>): Promise<ApiResponse<Category>> {
+    return apiClient.patch(`/expenses/categories/${id}`, data);
   },
 
-  // Delete category
+  /**
+   * Delete category
+   */
   async deleteCategory(id: string): Promise<ApiResponse<null>> {
-    return apiClient.delete(`/categories/${id}`);
+    return apiClient.delete(`/expenses/categories/${id}`);
   },
 };
 

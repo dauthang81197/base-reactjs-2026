@@ -1,6 +1,6 @@
 // ── Expense Feature Types ─────────────────────────────────────────────────────
 
-export type TransactionType = 'income' | 'expense';
+export type TransactionType = 'income' | 'expense' | 'INCOME' | 'EXPENSE';
 
 export interface Category {
     id: string;
@@ -13,7 +13,7 @@ export interface Category {
 export interface Wallet {
     id: string;
     name: string;
-    type: 'cash' | 'bank' | 'credit' | 'e-wallet' | 'investment';
+    type: 'CASH' | 'BANK' | 'CREDIT' | 'E_WALLET' | 'INVESTMENT';
     balance: number;
     currency: string;
     color: string;
@@ -26,9 +26,13 @@ export interface Transaction {
     amount: number;
     currency: string;
     categoryId: string;
+    category?: Category;
     walletId: string;
+    wallet?: Wallet;
     description: string;
-    date: string; // ISO date string
+    date?: string; // ISO date string
+    createdAt?: string;
+    updatedAt?: string;
     note?: string;
     tags?: string[];
 }
@@ -36,11 +40,18 @@ export interface Transaction {
 export interface Budget {
     id: string;
     categoryId: string;
+    category?: Category;
     amount: number;
+    budgetAmount: number;
     spent: number;
+    spentAmount: number;
+    remaining: number;
+    percentageUsed: number;
     period: 'weekly' | 'monthly' | 'yearly';
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
+    month?: number;
+    year?: number;
 }
 
 export interface ExpenseSummary {
@@ -63,4 +74,23 @@ export interface MonthlyTrend {
     month: string;
     income: number;
     expense: number;
+}
+
+// ── Dashboard Types ───────────────────────────────────────────────────────────
+export interface DashboardOverview {
+    totalBalance: number;
+    totalIncome: number;
+    totalExpense: number;
+    netSavings: number;
+    incomeVsExpenseLast6Months: MonthlyTrend[];
+    expenseByCategory: CategorySummary[];
+    topCategories: CategorySummary[];
+    recentTransactions: Transaction[];
+}
+
+// ── Wallet Summary ────────────────────────────────────────────────────────────
+export interface WalletSummary {
+    totalAssets: number;
+    totalLiabilities: number;
+    netWorth: number;
 }

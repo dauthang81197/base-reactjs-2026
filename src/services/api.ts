@@ -46,8 +46,12 @@ class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response = await this.client.get<ApiResponse<T>>(url, config);
-      return response.data;
+      const response = await this.client.get<T>(url, config);
+      // Wrap raw API response in ApiResponse structure
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       throw this.handleError(error);
     }
@@ -59,8 +63,12 @@ class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response = await this.client.post<ApiResponse<T>>(url, data, config);
-      return response.data;
+      const response = await this.client.post<T>(url, data, config);
+      // Wrap raw API response in ApiResponse structure
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       throw this.handleError(error);
     }
@@ -72,8 +80,12 @@ class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response = await this.client.put<ApiResponse<T>>(url, data, config);
-      return response.data;
+      const response = await this.client.put<T>(url, data, config);
+      // Wrap raw API response in ApiResponse structure
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       throw this.handleError(error);
     }
@@ -85,8 +97,12 @@ class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response = await this.client.patch<ApiResponse<T>>(url, data, config);
-      return response.data;
+      const response = await this.client.patch<T>(url, data, config);
+      // Wrap raw API response in ApiResponse structure
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       throw this.handleError(error);
     }
@@ -97,8 +113,12 @@ class ApiClient {
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response = await this.client.delete<ApiResponse<T>>(url, config);
-      return response.data;
+      const response = await this.client.delete<T>(url, config);
+      // Wrap raw API response in ApiResponse structure
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       throw this.handleError(error);
     }
