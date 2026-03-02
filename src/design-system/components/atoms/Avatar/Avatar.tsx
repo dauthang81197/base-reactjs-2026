@@ -8,22 +8,22 @@ const avatarVariants = cva(
   {
     variants: {
       size: {
-        xs:  'h-6  w-6  text-label-sm',
-        sm:  'h-8  w-8  text-label-md',
-        md:  'h-10 w-10 text-label-lg',
-        lg:  'h-12 w-12 text-title-sm',
-        xl:  'h-16 w-16 text-title-md',
-        '2xl':'h-24 w-24 text-title-lg',
+        xs: 'h-6  w-6  text-label-sm',
+        sm: 'h-8  w-8  text-label-md',
+        md: 'h-10 w-10 text-label-lg',
+        lg: 'h-12 w-12 text-title-sm',
+        xl: 'h-16 w-16 text-title-md',
+        '2xl': 'h-24 w-24 text-title-lg',
       },
       // Figma shows colored avatars for initials
       color: {
-        brand:  'bg-brand-primary   text-white',
+        brand: 'bg-brand-primary   text-white',
         accent: 'bg-brand-accent    text-brand-primary',
-        coral:  'bg-support-coral   text-white',
-        green:  'bg-support-green   text-white',
+        coral: 'bg-support-coral   text-white',
+        green: 'bg-support-green   text-white',
         purple: 'bg-support-purple  text-white',
-        cyan:   'bg-support-cyan    text-neutral-900',
-        neutral:'bg-neutral-300     text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200',
+        cyan: 'bg-support-cyan    text-neutral-900',
+        neutral: 'bg-neutral-300     text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200',
       },
     },
     defaultVariants: { size: 'md', color: 'brand' },
@@ -36,18 +36,18 @@ const statusVariants = cva(
   {
     variants: {
       status: {
-        online:  'bg-success',
+        online: 'bg-success',
         offline: 'bg-neutral-400',
-        busy:    'bg-danger',
-        away:    'bg-warning',
+        busy: 'bg-danger',
+        away: 'bg-warning',
       },
       size: {
-        xs:   'h-1.5 w-1.5',
-        sm:   'h-2   w-2',
-        md:   'h-2.5 w-2.5',
-        lg:   'h-3   w-3',
-        xl:   'h-3.5 w-3.5',
-        '2xl':'h-4   w-4',
+        xs: 'h-1.5 w-1.5',
+        sm: 'h-2   w-2',
+        md: 'h-2.5 w-2.5',
+        lg: 'h-3   w-3',
+        xl: 'h-3.5 w-3.5',
+        '2xl': 'h-4   w-4',
       },
     },
     defaultVariants: { status: 'online', size: 'md' },
@@ -57,10 +57,10 @@ const statusVariants = cva(
 // ── Types ─────────────────────────────────────────────────────────────────────
 export interface AvatarProps
   extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>,
-    VariantProps<typeof avatarVariants> {
-  src?:    string;
-  alt?:    string;
-  name?:   string; // used for initials fallback
+  VariantProps<typeof avatarVariants> {
+  src?: string;
+  alt?: string;
+  name?: string; // used for initials fallback
   status?: 'online' | 'offline' | 'busy' | 'away';
 }
 
@@ -78,7 +78,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
   ({ className, size, color, src, alt, name, status, ...props }, ref) => {
     const [imgError, setImgError] = React.useState(false);
     const showImage = src && !imgError;
-    const initials  = name ? getInitials(name) : '?';
+    const initials = name ? getInitials(name) : '?';
 
     return (
       <span
@@ -132,13 +132,13 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
         {visible.map((child, i) =>
           React.isValidElement(child)
             ? React.cloneElement(child as React.ReactElement<AvatarProps>, {
-                key: i,
-                size,
-                className: cn(
-                  'ring-2 ring-white dark:ring-neutral-800',
-                  (child as React.ReactElement<AvatarProps>).props.className
-                ),
-              })
+              key: i,
+              size,
+              className: cn(
+                'ring-2 ring-white dark:ring-neutral-800',
+                (child as React.ReactElement<AvatarProps>).props.className
+              ),
+            })
             : child
         )}
         {overflow > 0 && (
