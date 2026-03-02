@@ -26,6 +26,7 @@ import {
   ResetPasswordPageV2,
   LockScreenPageV1,
   LockScreenPageV2,
+  GoogleCallbackPage,
 } from './features/Auth';
 
 // ── Placeholder Pages ─────────────────────────────────────────────────────────
@@ -71,6 +72,9 @@ function AppRouter() {
         {/* Lock Screen */}
         <Route path="/auth/lock-screen" element={<LockScreenPageV1 />} />
         <Route path="/auth/lock-screen-v2" element={<LockScreenPageV2 />} />
+
+        {/* Google OAuth Callback */}
+        <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
 
         {/* ── Protected Routes (Main Layout) ── */}
         <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>

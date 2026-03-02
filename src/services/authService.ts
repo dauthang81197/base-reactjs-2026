@@ -283,8 +283,49 @@ class AuthService {
     }
 
     async loginWithGoogle(): Promise<void> {
-        // Redirect to Google OAuth
-        window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/auth/google`;
+        // Redirect to Google OAuth endpoint
+        window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:8000/api'}/auth/google`;
+    }
+
+    /**
+     * Handle Google OAuth callback
+     * Receives JWT token from URL params, fetches user profile, and stores auth data
+     */
+    async handleGoogleCallback(token: string): Promise<ApiResponse<AuthResponse>> {
+        try {
+            // Store token first so the API client can use it for the /auth/me request
+            this.setToken(token);
+
+            // Fetch user profile using the JWT token
+            const response = await api.get<User>('/v1/auth/me');
+
+            if (response.success && response.data) {
+                this.setStoredUser(response.data);
+                this.removeLockedUser();
+
+                return {
+                    success: true,
+                    data: {
+                        user: response.data,
+                        token,
+                    },
+                };
+            }
+
+            // If fetching user failed, clean up
+            this.removeToken();
+            return {
+                success: false,
+                error: 'Failed to fetch user profile',
+            };
+        } catch {
+            // Clean up on error
+            this.removeToken();
+            return {
+                success: false,
+                error: 'Google authentication failed',
+            };
+        }
     }
 }
 

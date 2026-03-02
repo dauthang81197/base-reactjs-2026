@@ -22,6 +22,7 @@ interface AuthStore {
     forgotPassword: (data: ForgotPasswordData) => Promise<boolean>;
     resetPassword: (data: ResetPasswordData) => Promise<boolean>;
     loginWithGoogle: () => Promise<void>;
+    handleGoogleCallback: (token: string) => Promise<boolean>;
     setUser: (user: User | null) => void;
     setLoading: (loading: boolean) => void;
     setError: (error: string | null) => void;
@@ -230,9 +231,41 @@ export const useAuthStore = create<AuthStore>()(
                 }
             },
 
-            // Google login
+            // Google login - redirect to backend
             loginWithGoogle: async () => {
                 await authService.loginWithGoogle();
+            },
+
+            // Handle Google OAuth callback
+            handleGoogleCallback: async (token: string) => {
+                set({ isLoading: true, error: null });
+                try {
+                    const response = await authService.handleGoogleCallback(token);
+                    if (response.success && response.data) {
+                        set({
+                            isAuthenticated: true,
+                            user: response.data.user,
+                            token: response.data.token,
+                            isLoading: false,
+                            error: null,
+                            isLocked: false,
+                            lockedUser: null,
+                        });
+                        return true;
+                    } else {
+                        set({
+                            isLoading: false,
+                            error: response.error || 'Google login failed',
+                        });
+                        return false;
+                    }
+                } catch (error) {
+                    set({
+                        isLoading: false,
+                        error: error instanceof Error ? error.message : 'Google login failed',
+                    });
+                    return false;
+                }
             },
 
             // Utility actions
