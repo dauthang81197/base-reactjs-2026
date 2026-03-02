@@ -39,7 +39,7 @@ const LockScreenPageV2: React.FC = () => {
             <div className="flex justify-center mb-4">
                 <Avatar
                     src={user.avatar}
-                    name={user.fullName}
+                    name={user.fullName ?? undefined}
                     size="2xl"
                     className="ring-4 ring-[#e8a87c] ring-offset-2"
                 />

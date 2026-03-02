@@ -271,7 +271,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                     tickFormatter={(value) => `$${value / 1000}k`}
                                 />
                                 <Tooltip
-                                    formatter={(value: number | string) => formatCurrency(Number(value))}
+                                    formatter={(value) => formatCurrency(Number(value ?? 0))}
                                     contentStyle={{
                                         backgroundColor: 'white',
                                         border: '1px solid #E5E7EB',
@@ -327,7 +327,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                     ))}
                                 </Pie>
                                 <Tooltip
-                                    formatter={(value: number | string) => formatCurrency(Number(value))}
+                                    formatter={(value) => formatCurrency(Number(value ?? 0))}
                                     contentStyle={{
                                         backgroundColor: 'white',
                                         border: '1px solid #E5E7EB',
