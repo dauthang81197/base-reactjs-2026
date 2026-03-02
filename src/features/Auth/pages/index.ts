@@ -8,3 +8,4 @@ export { default as ResetPasswordPageV1 } from './ResetPasswordPageV1';
 export { default as ResetPasswordPageV2 } from './ResetPasswordPageV2';
 export { default as LockScreenPageV1 } from './LockScreenPageV1';
 export { default as LockScreenPageV2 } from './LockScreenPageV2';
+export { default as GoogleCallbackPage } from './GoogleCallbackPage';
