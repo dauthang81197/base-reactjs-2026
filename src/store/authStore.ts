@@ -84,7 +84,7 @@ export const useAuthStore = create<AuthStore>()(
                         set({
                             isAuthenticated: true,
                             user: response.data.user,
-                            token: response.data.token,
+                            token: response.data.accessToken,
                             isLoading: false,
                             error: null,
                             isLocked: false,
@@ -116,7 +116,7 @@ export const useAuthStore = create<AuthStore>()(
                         set({
                             isAuthenticated: true,
                             user: response.data.user,
-                            token: response.data.token,
+                            token: response.data.accessToken,
                             isLoading: false,
                             error: null,
                         });
@@ -176,7 +176,7 @@ export const useAuthStore = create<AuthStore>()(
                         set({
                             isAuthenticated: true,
                             user: response.data.user,
-                            token: response.data.token,
+                            token: response.data.accessToken,
                             isLoading: false,
                             error: null,
                             isLocked: false,
@@ -245,7 +245,7 @@ export const useAuthStore = create<AuthStore>()(
                         set({
                             isAuthenticated: true,
                             user: response.data.user,
-                            token: response.data.token,
+                            token: response.data.accessToken,
                             isLoading: false,
                             error: null,
                             isLocked: false,

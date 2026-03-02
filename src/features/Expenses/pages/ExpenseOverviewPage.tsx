@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     TrendingUp,
     TrendingDown,
     Wallet,
     ArrowUpRight,
     ArrowDownRight,
+    AlertCircle,
+    RefreshCw,
 } from 'lucide-react';
 import {
     PieChart,
@@ -20,15 +23,9 @@ import {
     Legend,
 } from 'recharts';
 import { Card, CardHeader, CardBody } from '../../../design-system/components/atoms/Card';
-import {
-    transactions,
-    categorySummary,
-    monthlyTrends,
-    getExpenseSummary,
-    getTotalBalance,
-    getCategoryById,
-    getWalletById,
-} from '../../../data/expensesMockData';
+import { Button } from '../../../design-system/components/atoms/Button';
+import { dashboardService } from '../../../services/dashboardService';
+import type { DashboardOverview } from '../../../services/dashboardService';
 import { formatCurrency, formatDate } from '../../../utils/formatters';
 
 // ── Summary Card Component ────────────────────────────────────────────────────
@@ -64,10 +61,10 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
                 {trend !== undefined && (
                     <div
                         className={`flex items-center gap-1 text-xs font-medium ${trendType === 'up'
-                                ? 'text-emerald-600'
-                                : trendType === 'down'
-                                    ? 'text-red-500'
-                                    : 'text-neutral-500'
+                            ? 'text-emerald-600'
+                            : trendType === 'down'
+                                ? 'text-red-500'
+                                : 'text-neutral-500'
                             }`}
                     >
                         {trendType === 'up' ? (
@@ -83,53 +80,165 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     </Card>
 );
 
+// ── Loading Skeleton ──────────────────────────────────────────────────────────
+const LoadingSkeleton: React.FC = () => (
+    <div className="space-y-6 animate-pulse">
+        <div className="h-8 bg-neutral-200 dark:bg-neutral-700 rounded w-48" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-24 bg-neutral-200 dark:bg-neutral-700 rounded-xl" />
+            ))}
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 h-[350px] bg-neutral-200 dark:bg-neutral-700 rounded-xl" />
+            <div className="h-[350px] bg-neutral-200 dark:bg-neutral-700 rounded-xl" />
+        </div>
+    </div>
+);
+
+// ── Error Component ───────────────────────────────────────────────────────────
+interface ErrorDisplayProps {
+    message: string;
+    onRetry: () => void;
+}
+
+const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry }) => (
+    <div className="flex flex-col items-center justify-center py-12">
+        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
+            Failed to load data
+        </h3>
+        <p className="text-neutral-500 mb-4">{message}</p>
+        <Button variant="outline" size="sm" leftIcon={<RefreshCw className="h-4 w-4" />} onClick={onRetry}>
+            Try Again
+        </Button>
+    </div>
+);
+
 // ── Expense Overview Page ─────────────────────────────────────────────────────
 const ExpenseOverviewPage: React.FC = () => {
-    const summary = getExpenseSummary();
-    const totalBalance = getTotalBalance();
-    const recentTransactions = transactions.slice(0, 5);
+    const [data, setData] = useState<DashboardOverview | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    // Get current month and year
+    const now = new Date();
+    const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1);
+    const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+
+    const fetchDashboardData = useCallback(async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await dashboardService.getOverview({
+                month: selectedMonth,
+                year: selectedYear,
+            });
+            if (response.success && response.data) {
+                setData(response.data);
+            } else {
+                setError(response.error || 'Failed to load dashboard data');
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'An error occurred');
+        } finally {
+            setLoading(false);
+        }
+    }, [selectedMonth, selectedYear]);
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, [fetchDashboardData]);
+
+    if (loading) {
+        return <LoadingSkeleton />;
+    }
+
+    if (error) {
+        return <ErrorDisplay message={error} onRetry={fetchDashboardData} />;
+    }
+
+    if (!data) {
+        return <ErrorDisplay message="No data available" onRetry={fetchDashboardData} />;
+    }
+
+    const periodLabel = `${new Date(selectedYear, selectedMonth - 1).toLocaleString('default', { month: 'long' })} ${selectedYear}`;
 
     return (
         <div className="space-y-6">
             {/* Page Header */}
-            <div>
-                <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
-                    Expense Overview
-                </h1>
-                <p className="text-neutral-500 dark:text-neutral-400">
-                    Track your income and expenses for {summary.period}
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
+                        Expense Overview
+                    </h1>
+                    <p className="text-neutral-500 dark:text-neutral-400">
+                        Track your income and expenses for {periodLabel}
+                    </p>
+                </div>
+                <div className="flex gap-2">
+                    <select
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                        className="px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm"
+                    >
+                        {Array.from({ length: 12 }, (_, i) => (
+                            <option key={i + 1} value={i + 1}>
+                                {new Date(2000, i).toLocaleString('default', { month: 'long' })}
+                            </option>
+                        ))}
+                    </select>
+                    <select
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(Number(e.target.value))}
+                        className="px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm"
+                    >
+                        {Array.from({ length: 5 }, (_, i) => {
+                            const year = now.getFullYear() - 2 + i;
+                            return (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        leftIcon={<RefreshCw className="h-4 w-4" />}
+                        onClick={fetchDashboardData}
+                    >
+                        Refresh
+                    </Button>
+                </div>
             </div>
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <SummaryCard
                     title="Total Balance"
-                    amount={totalBalance}
+                    amount={data.totalBalance}
                     icon={<Wallet className="h-6 w-6 text-indigo-600" />}
                     iconBg="bg-indigo-100 dark:bg-indigo-900/30"
                 />
                 <SummaryCard
                     title="Total Income"
-                    amount={summary.totalIncome}
-                    trend={12.5}
+                    amount={data.totalIncome}
                     trendType="up"
                     icon={<TrendingUp className="h-6 w-6 text-emerald-600" />}
                     iconBg="bg-emerald-100 dark:bg-emerald-900/30"
                 />
                 <SummaryCard
                     title="Total Expenses"
-                    amount={summary.totalExpense}
-                    trend={8.2}
+                    amount={data.totalExpense}
                     trendType="down"
                     icon={<TrendingDown className="h-6 w-6 text-red-500" />}
                     iconBg="bg-red-100 dark:bg-red-900/30"
                 />
                 <SummaryCard
                     title="Net Savings"
-                    amount={summary.balance}
-                    trend={15.3}
-                    trendType="up"
+                    amount={data.netSavings}
+                    trendType={data.netSavings >= 0 ? 'up' : 'down'}
                     icon={<TrendingUp className="h-6 w-6 text-blue-600" />}
                     iconBg="bg-blue-100 dark:bg-blue-900/30"
                 />
@@ -147,7 +256,7 @@ const ExpenseOverviewPage: React.FC = () => {
                     </CardHeader>
                     <CardBody className="h-[300px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={monthlyTrends}>
+                            <LineChart data={data.incomeVsExpenseLast6Months}>
                                 <CartesianGrid strokeDasharray="3 3" className="stroke-neutral-200 dark:stroke-neutral-700" />
                                 <XAxis
                                     dataKey="month"
@@ -204,7 +313,7 @@ const ExpenseOverviewPage: React.FC = () => {
                         <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                                 <Pie
-                                    data={categorySummary}
+                                    data={data.expenseByCategory}
                                     cx="50%"
                                     cy="50%"
                                     innerRadius={60}
@@ -213,7 +322,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                     dataKey="amount"
                                     nameKey="categoryName"
                                 >
-                                    {categorySummary.map((entry, index) => (
+                                    {data.expenseByCategory.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
@@ -241,7 +350,7 @@ const ExpenseOverviewPage: React.FC = () => {
                         </h3>
                     </CardHeader>
                     <CardBody className="space-y-3">
-                        {categorySummary.slice(0, 5).map((cat) => (
+                        {(data.topCategories || []).slice(0, 5).map((cat) => (
                             <div key={cat.categoryId} className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div
@@ -299,10 +408,10 @@ const ExpenseOverviewPage: React.FC = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
-                                    {recentTransactions.map((tx) => {
-                                        const category = getCategoryById(tx.categoryId);
-                                        const wallet = getWalletById(tx.walletId);
-                                        const isIncome = tx.type === 'income';
+                                    {data.recentTransactions.map((tx) => {
+                                        const category = tx.category;
+                                        const wallet = tx.wallet;
+                                        const isIncome = tx.type === 'income' || tx.type === 'INCOME';
 
                                         return (
                                             <tr key={tx.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">

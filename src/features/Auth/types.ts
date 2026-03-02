@@ -3,11 +3,24 @@
 export interface User {
     id: string;
     email: string;
-    fullName: string;
+    fullName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    middleName?: string | null;
+    username?: string;
+    phoneNumber?: string | null;
     avatar?: string;
-    role: 'admin' | 'user' | 'moderator';
+    role?: 'admin' | 'user' | 'moderator';
+    organizationId?: string;
+    organization?: {
+        id: string;
+        name?: string;
+        createdAt: string;
+        updatedAt: string;
+    };
     createdAt: string;
     updatedAt: string;
+    deletedAt?: string | null;
 }
 
 export interface AuthState {
@@ -49,7 +62,7 @@ export interface LockScreenData {
 
 export interface AuthResponse {
     user: User;
-    token: string;
+    accessToken: string;
     refreshToken?: string;
 }
 

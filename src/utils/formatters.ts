@@ -14,10 +14,12 @@ export const formatCurrency = (
 
 // ── Date Formatter ────────────────────────────────────────────────────────────
 export const formatDate = (
-    date: string | Date,
+    date: string | Date | undefined | null,
     options?: Intl.DateTimeFormatOptions
 ): string => {
+    if (!date) return '—';
     const dateObj = typeof date === 'string' ? new Date(date) : date;
+    if (isNaN(dateObj.getTime())) return '—';
     const defaultOptions: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: 'short',

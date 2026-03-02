@@ -99,7 +99,7 @@ class AuthService {
             const response = await api.post<AuthResponse>('/auth/login', credentials);
 
             if (response.success && response.data) {
-                this.setToken(response.data.token);
+                this.setToken(response.data.accessToken);
                 this.setStoredUser(response.data.user);
                 if (response.data.refreshToken) {
                     this.setRefreshToken(response.data.refreshToken);
@@ -131,7 +131,7 @@ class AuthService {
                 success: true,
                 data: {
                     user: mockUser,
-                    token: mockToken,
+                    accessToken: mockToken,
                 },
             };
         }
@@ -142,7 +142,7 @@ class AuthService {
             const response = await api.post<AuthResponse>('/auth/register', data);
 
             if (response.success && response.data) {
-                this.setToken(response.data.token);
+                this.setToken(response.data.accessToken);
                 this.setStoredUser(response.data.user);
             }
 
@@ -153,7 +153,6 @@ class AuthService {
                 id: '1',
                 email: data.email,
                 fullName: data.fullName,
-                role: 'user',
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
             };
@@ -167,7 +166,7 @@ class AuthService {
                 success: true,
                 data: {
                     user: mockUser,
-                    token: mockToken,
+                    accessToken: mockToken,
                 },
             };
         }
@@ -218,7 +217,7 @@ class AuthService {
             });
 
             if (response.success && response.data) {
-                this.setToken(response.data.token);
+                this.setToken(response.data.accessToken);
                 this.setStoredUser(response.data.user);
                 this.removeLockedUser();
             }
@@ -236,7 +235,7 @@ class AuthService {
                 success: true,
                 data: {
                     user: lockedUser,
-                    token: mockToken,
+                    accessToken: mockToken,
                 },
             };
         }
@@ -307,7 +306,7 @@ class AuthService {
                     success: true,
                     data: {
                         user: response.data,
-                        token,
+                        accessToken: token,
                     },
                 };
             }
