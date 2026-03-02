@@ -653,7 +653,7 @@ const FileManagerPage: React.FC = () => {
 
                     {/* Upload Button */}
                     <Button
-                        variant="filled"
+                        variant="primary"
                         size="sm"
                         leftIcon={<Upload className="h-4 w-4" />}
                         onClick={() => setShowUploadPanel(true)}

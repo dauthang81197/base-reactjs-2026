@@ -92,6 +92,7 @@ interface NoteDetailModalProps {
     isOpen: boolean;
     onClose: () => void;
     onEdit: () => void;
+    onPin?: () => void;
 }
 
 const NoteDetailModal: React.FC<NoteDetailModalProps> = ({
@@ -257,7 +258,7 @@ const AddNoteModal: React.FC<AddNoteModalProps> = ({ isOpen, onClose, onSave }) 
                     {/* Submit Button */}
                     <Button
                         type="submit"
-                        variant="filled"
+                        variant="primary"
                         className="w-full bg-green-600 hover:bg-green-700"
                     >
                         Create
@@ -322,7 +323,7 @@ const NotesPage: React.FC = () => {
                         <SlidersHorizontal className="h-4 w-4 text-neutral-500" />
                     </button>
                     <Button
-                        variant="filled"
+                        variant="primary"
                         size="sm"
                         leftIcon={<Plus className="h-4 w-4" />}
                         onClick={() => setIsAddOpen(true)}
