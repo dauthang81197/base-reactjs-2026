@@ -104,8 +104,8 @@ export const taskService = {
    * Get today's tasks + stats
    * GET /flower/tasks/today
    */
-  async getTodayTasks(): Promise<ApiResponse<TodayTasksResponse>> {
-    return apiClient.get('/flower/tasks/today');
+  async getTodayTasks(date: Date): Promise<ApiResponse<TodayTasksResponse>> {
+    return apiClient.get(`/flower/tasks/today?date=${date.toISOString()}`);
   },
 
   /**

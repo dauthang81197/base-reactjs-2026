@@ -55,6 +55,7 @@ export interface PaginationParams {
 }
 
 export interface PaginatedResponse<T> {
+  items: T[];
   data: T[];
   total: number;
   page: number;

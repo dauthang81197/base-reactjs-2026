@@ -63,7 +63,7 @@ const TaskListPage: React.FC = () => {
   const [deleteTarget, setDeleteTarget] = useState<Task | null>(null);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [searchDebounce, setSearchDebounce] = useState(filters.search || '');
-
+  console.log(tasks, "adsflkj")
   // Fetch tasks and tags on mount
   useEffect(() => {
     fetchTasks();
@@ -110,10 +110,10 @@ const TaskListPage: React.FC = () => {
 
   const handleStatusToggle = async (task: Task) => {
     const nextStatus: Record<TaskStatus, TaskStatus> = {
-      'todo': 'in-progress',
-      'in-progress': 'done',
-      'done': 'todo',
-      'overdue': 'in-progress',
+      'TODO': 'IN_PROGRESS',
+      'IN_PROGRESS': 'DONE',
+      'DONE': 'TODO',
+      'OVERDUE': 'IN_PROGRESS',
     };
     await updateTask(task.id, { status: nextStatus[task.status] });
   };
@@ -249,17 +249,16 @@ const TaskListPage: React.FC = () => {
                     title="Toggle status"
                   >
                     <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                        task.status === 'done'
-                          ? 'bg-green-500 border-green-500'
-                          : task.status === 'overdue'
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${task.status === 'DONE'
+                        ? 'bg-green-500 border-green-500'
+                        : task.status === 'OVERDUE'
                           ? 'border-red-400 bg-red-50 dark:bg-red-900/20'
-                          : task.status === 'in-progress'
-                          ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                          : 'border-neutral-300 dark:border-neutral-600'
-                      }`}
+                          : task.status === 'IN_PROGRESS'
+                            ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                            : 'border-neutral-300 dark:border-neutral-600'
+                        }`}
                     >
-                      {task.status === 'done' && (
+                      {task.status === 'DONE' && (
                         <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
@@ -271,11 +270,10 @@ const TaskListPage: React.FC = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <p
-                        className={`text-sm font-medium ${
-                          task.status === 'done'
-                            ? 'line-through text-neutral-400'
-                            : 'text-neutral-900 dark:text-white'
-                        }`}
+                        className={`text-sm font-medium ${task.status === 'DONE'
+                          ? 'line-through text-neutral-400'
+                          : 'text-neutral-900 dark:text-white'
+                          }`}
                       >
                         {task.title}
                       </p>
@@ -322,7 +320,7 @@ const TaskListPage: React.FC = () => {
                     {/* Meta row */}
                     <div className="flex flex-wrap items-center gap-2 mt-2">
                       <Badge variant="subtle" color={STATUS_COLOR_MAP[task.status] as 'brand'} size="sm">
-                        {task.status === 'in-progress' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                        {task.status === 'IN_PROGRESS' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}
                       </Badge>
 
                       <Badge variant="subtle" color={PRIORITY_COLOR_MAP[task.priority] as 'brand'} size="sm">

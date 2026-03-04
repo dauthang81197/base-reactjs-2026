@@ -12,7 +12,7 @@ const DEFAULT_SETTINGS: TaskSettings = {
   defaultView: 'list',
   showCompletedTasks: true,
   autoArchiveDays: 30,
-  defaultPriority: 'medium',
+  defaultPriority: 'MEDIUM',
 };
 
 // ── Inner Form Component (receives initial settings as prop) ──────────────────
@@ -91,16 +91,14 @@ const SettingsForm: React.FC<{
               role="switch"
               aria-checked={form.showCompletedTasks}
               onClick={() => setForm((p) => ({ ...p, showCompletedTasks: !p.showCompletedTasks }))}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                form.showCompletedTasks
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${form.showCompletedTasks
                   ? 'bg-green-500'
                   : 'bg-neutral-300 dark:bg-neutral-600'
-              }`}
+                }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  form.showCompletedTasks ? 'translate-x-6' : 'translate-x-1'
-                }`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${form.showCompletedTasks ? 'translate-x-6' : 'translate-x-1'
+                  }`}
               />
             </button>
           </div>
