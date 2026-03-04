@@ -36,6 +36,7 @@ interface SummaryCardProps {
     icon: React.ReactNode;
     iconBg: string;
     trendType?: 'up' | 'down' | 'neutral';
+    formatAmount?: (n: number) => string;
 }
 
 const SummaryCard: React.FC<SummaryCardProps> = ({
@@ -45,6 +46,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
     icon,
     iconBg,
     trendType = 'neutral',
+    formatAmount = formatCurrency,
 }) => (
     <Card className="flex-1 min-w-[200px]">
         <CardBody className="flex items-center gap-4">
@@ -56,7 +58,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             <div className="flex-1">
                 <p className="text-sm text-neutral-500 dark:text-neutral-400">{title}</p>
                 <p className="text-xl font-bold text-neutral-900 dark:text-white">
-                    {formatCurrency(amount)}
+                    {formatAmount(amount)}
                 </p>
                 {trend !== undefined && (
                     <div
@@ -115,11 +117,18 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry }) => (
     </div>
 );
 
+// ── VND Exchange Rate ─────────────────────────────────────────────────────────
+const USD_TO_VND = 26000;
+
+const formatVND = (amount: number): string =>
+    new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(amount);
+
 // ── Expense Overview Page ─────────────────────────────────────────────────────
 const ExpenseOverviewPage: React.FC = () => {
     const [data, setData] = useState<DashboardOverview | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isVND, setIsVND] = useState(false);
 
     // Get current month and year
     const now = new Date();
@@ -164,6 +173,9 @@ const ExpenseOverviewPage: React.FC = () => {
 
     const periodLabel = `${new Date(selectedYear, selectedMonth - 1).toLocaleString('default', { month: 'long' })} ${selectedYear}`;
 
+    const conv = (amount: number) => isVND ? amount * USD_TO_VND : amount;
+    const fmt = (amount: number) => isVND ? formatVND(conv(amount)) : formatCurrency(amount);
+
     return (
         <div className="space-y-6">
             {/* Page Header */}
@@ -176,7 +188,27 @@ const ExpenseOverviewPage: React.FC = () => {
                         Track your income and expenses for {periodLabel}
                     </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap items-center gap-2">
+                    {/* USD → VND Toggle */}
+                    <label className="flex items-center gap-2 cursor-pointer select-none px-3 py-2 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800">
+                        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">USD</span>
+                        <button
+                            type="button"
+                            role="switch"
+                            aria-checked={isVND}
+                            onClick={() => setIsVND((v) => !v)}
+                            className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+                                isVND ? 'bg-indigo-600' : 'bg-neutral-300 dark:bg-neutral-600'
+                            }`}
+                        >
+                            <span
+                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ${
+                                    isVND ? 'translate-x-4' : 'translate-x-0'
+                                }`}
+                            />
+                        </button>
+                        <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">VND</span>
+                    </label>
                     <select
                         value={selectedMonth}
                         onChange={(e) => setSelectedMonth(Number(e.target.value))}
@@ -220,6 +252,7 @@ const ExpenseOverviewPage: React.FC = () => {
                     amount={data.totalBalance}
                     icon={<Wallet className="h-6 w-6 text-indigo-600" />}
                     iconBg="bg-indigo-100 dark:bg-indigo-900/30"
+                    formatAmount={fmt}
                 />
                 <SummaryCard
                     title="Total Income"
@@ -227,6 +260,7 @@ const ExpenseOverviewPage: React.FC = () => {
                     trendType="up"
                     icon={<TrendingUp className="h-6 w-6 text-emerald-600" />}
                     iconBg="bg-emerald-100 dark:bg-emerald-900/30"
+                    formatAmount={fmt}
                 />
                 <SummaryCard
                     title="Total Expenses"
@@ -234,6 +268,7 @@ const ExpenseOverviewPage: React.FC = () => {
                     trendType="down"
                     icon={<TrendingDown className="h-6 w-6 text-red-500" />}
                     iconBg="bg-red-100 dark:bg-red-900/30"
+                    formatAmount={fmt}
                 />
                 <SummaryCard
                     title="Net Savings"
@@ -241,6 +276,7 @@ const ExpenseOverviewPage: React.FC = () => {
                     trendType={data.netSavings >= 0 ? 'up' : 'down'}
                     icon={<TrendingUp className="h-6 w-6 text-blue-600" />}
                     iconBg="bg-blue-100 dark:bg-blue-900/30"
+                    formatAmount={fmt}
                 />
             </div>
 
@@ -268,10 +304,10 @@ const ExpenseOverviewPage: React.FC = () => {
                                     tick={{ fontSize: 12, fill: '#6B7280' }}
                                     axisLine={false}
                                     tickLine={false}
-                                    tickFormatter={(value) => `$${value / 1000}k`}
+                                    tickFormatter={(value) => isVND ? `${(value * USD_TO_VND / 1000000).toFixed(0)}M` : `$${value / 1000}k`}
                                 />
                                 <Tooltip
-                                    formatter={(value) => formatCurrency(Number(value ?? 0))}
+                                    formatter={(value) => fmt(Number(value ?? 0))}
                                     contentStyle={{
                                         backgroundColor: 'white',
                                         border: '1px solid #E5E7EB',
@@ -327,7 +363,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                     ))}
                                 </Pie>
                                 <Tooltip
-                                    formatter={(value) => formatCurrency(Number(value ?? 0))}
+                                    formatter={(value) => fmt(Number(value ?? 0))}
                                     contentStyle={{
                                         backgroundColor: 'white',
                                         border: '1px solid #E5E7EB',
@@ -363,7 +399,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                 </div>
                                 <div className="text-right">
                                     <p className="text-sm font-medium text-neutral-900 dark:text-white">
-                                        {formatCurrency(cat.amount)}
+                                        {fmt(cat.amount)}
                                     </p>
                                     <p className="text-xs text-neutral-500">{cat.percentage}%</p>
                                 </div>
@@ -437,7 +473,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                                         }`}
                                                 >
                                                     {isIncome ? '+' : '-'}
-                                                    {formatCurrency(tx.amount)}
+                                                    {fmt(tx.amount)}
                                                 </td>
                                             </tr>
                                         );

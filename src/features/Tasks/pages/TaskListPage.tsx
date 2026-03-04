@@ -221,22 +221,22 @@ const TaskListPage: React.FC = () => {
             <h2 className="text-base font-semibold text-neutral-900 dark:text-white">
               Task List
             </h2>
-            <span className="text-sm text-neutral-500">{tasks.length} items</span>
+            <span className="text-sm text-neutral-500">{tasks?.length} items</span>
           </div>
         </CardHeader>
         <CardBody className="p-0">
-          {loading && tasks.length === 0 ? (
+          {loading && tasks?.length === 0 ? (
             <div className="flex items-center justify-center py-16">
               <Loader size={32} className="animate-spin text-neutral-400" />
             </div>
-          ) : tasks.length === 0 ? (
+          ) : tasks?.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-neutral-400">
               <p className="text-lg font-medium">No tasks found</p>
               <p className="text-sm mt-1">Try adjusting your filters or create a new task.</p>
             </div>
           ) : (
             <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-              {tasks.map((task) => (
+              {tasks?.map((task) => (
                 <div
                   key={task.id}
                   className="flex items-start gap-3 px-5 py-4 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"

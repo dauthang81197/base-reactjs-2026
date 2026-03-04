@@ -58,7 +58,7 @@ const TaskDashboardPage: React.FC = () => {
 
   const stats = dashboardData || {
     total: 0, todo: 0, inProgress: 0, done: 0, overdue: 0,
-    completionRate: 0, totalEstimatedMinutes: 0,
+    completionRate: 0, totalEstimatedMinutes: 0, todayTasks: 0,
     priorityBreakdown: { high: 0, medium: 0, low: 0 },
     upcomingDeadlines: [],
     tagsOverview: [],
@@ -147,6 +147,7 @@ const TaskDashboardPage: React.FC = () => {
             </div>
             <div className="flex justify-between mt-3 text-xs text-neutral-500">
               <span>Total estimate: {formatMinutes(stats.totalEstimatedMinutes)}</span>
+              <span>Today: {stats.todayTasks} task{stats.todayTasks !== 1 ? 's' : ''}</span>
             </div>
           </CardBody>
         </Card>
