@@ -38,7 +38,7 @@ export const walletService = {
    * Get wallet summary (total assets, liabilities, net worth)
    */
   async getWalletSummary(): Promise<ApiResponse<WalletSummary>> {
-    return apiClient.get('/expenses/wallets/summary');
+    return apiClient.get('/flower/wallets/summary');
   },
 
   /**
