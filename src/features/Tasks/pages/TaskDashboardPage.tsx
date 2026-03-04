@@ -228,7 +228,7 @@ const TaskDashboardPage: React.FC = () => {
                       </p>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant="subtle" color={STATUS_COLOR_MAP[task.status] as 'brand'} size="sm">
-                          {task.status === 'in-progress' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}
+                          {task.status === 'IN_PROGRESS' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}
                         </Badge>
                         {task.tags.slice(0, 2).map((tagId) => {
                           const tag = getTagById(tagId);
