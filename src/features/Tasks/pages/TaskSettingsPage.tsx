@@ -171,7 +171,7 @@ const SettingsForm: React.FC<{
 // ── Wrapper that fetches settings, then renders the form with a key ───────────
 const TaskSettingsPage: React.FC = () => {
   const { settings, error, fetchSettings, updateSettings } = useTaskStore();
-  const [settingsVersion, setSettingsVersion] = useState(0);
+
 
   useEffect(() => {
     fetchSettings();
