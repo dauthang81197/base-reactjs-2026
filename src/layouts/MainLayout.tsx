@@ -17,6 +17,10 @@ import {
   CreditCard,
   PieChart,
   Tags,
+  ListTodo,
+  CalendarCheck,
+  BarChart3,
+  Settings,
 } from 'lucide-react';
 import { Sidebar } from '../design-system/components/organisms/Sidebar';
 import type { NavItem } from '../design-system/components/organisms/Sidebar';
@@ -26,7 +30,18 @@ import { cn } from '../design-system/foundation/cn';
 // ── Navigation config ─────────────────────────────────────────────────────────
 const mainNav: NavItem[] = [
   { key: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
-  { key: '/tasks', label: 'Task', icon: <CheckSquare size={20} /> },
+  {
+    key: '/tasks',
+    label: 'Task',
+    icon: <CheckSquare size={20} />,
+    children: [
+      { key: '/tasks/dashboard', label: 'Dashboard', icon: <BarChart3 size={18} /> },
+      { key: '/tasks/list', label: 'All Tasks', icon: <ListTodo size={18} /> },
+      { key: '/tasks/today', label: 'Today Tasks', icon: <CalendarCheck size={18} /> },
+      { key: '/tasks/tags', label: 'Tags', icon: <Tags size={18} /> },
+      { key: '/tasks/settings', label: 'Settings', icon: <Settings size={18} /> },
+    ],
+  },
   { key: '/ecommerce', label: 'E-Commerce', icon: <ShoppingCart size={20} /> },
   { key: '/calendar', label: 'Calendar', icon: <Calendar size={20} /> },
   {

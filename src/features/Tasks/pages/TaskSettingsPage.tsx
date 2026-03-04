@@ -15,24 +15,19 @@ const DEFAULT_SETTINGS: TaskSettings = {
   defaultPriority: 'medium',
 };
 
-const TaskSettingsPage: React.FC = () => {
-  const { settings, loading, error, fetchSettings, updateSettings } = useTaskStore();
-  const [form, setForm] = useState<TaskSettings>({ ...settings });
+// ── Inner Form Component (receives initial settings as prop) ──────────────────
+const SettingsForm: React.FC<{
+  initialSettings: TaskSettings;
+  error: string | null;
+  onSave: (data: Partial<TaskSettings>) => Promise<void>;
+}> = ({ initialSettings, error, onSave }) => {
+  const [form, setForm] = useState<TaskSettings>({ ...initialSettings });
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetchSettings();
-  }, [fetchSettings]);
-
-  // Sync form when settings load from API
-  useEffect(() => {
-    setForm({ ...settings });
-  }, [settings]);
-
   const handleSave = async () => {
     setSaving(true);
-    await updateSettings(form);
+    await onSave(form);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -40,7 +35,7 @@ const TaskSettingsPage: React.FC = () => {
 
   const handleReset = async () => {
     setForm({ ...DEFAULT_SETTINGS });
-    await updateSettings(DEFAULT_SETTINGS);
+    await onSave(DEFAULT_SETTINGS);
     setSaved(false);
   };
 
@@ -170,6 +165,28 @@ const TaskSettingsPage: React.FC = () => {
         )}
       </div>
     </div>
+  );
+};
+
+// ── Wrapper that fetches settings, then renders the form with a key ───────────
+const TaskSettingsPage: React.FC = () => {
+  const { settings, error, fetchSettings, updateSettings } = useTaskStore();
+  const [settingsVersion, setSettingsVersion] = useState(0);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  // Use JSON string as key so the form remounts when settings actually change
+  const settingsKey = JSON.stringify(settings);
+
+  return (
+    <SettingsForm
+      key={settingsKey}
+      initialSettings={settings}
+      error={error}
+      onSave={updateSettings}
+    />
   );
 };
 
