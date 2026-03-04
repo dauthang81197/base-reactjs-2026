@@ -36,27 +36,27 @@ export const budgetService = {
      * Returns budgets with spent amount and remaining calculated
      */
     async getBudgets(params?: BudgetParams): Promise<ApiResponse<Budget[]>> {
-        return apiClient.get('/expenses/budgets', { params });
+        return apiClient.get('/flower/budgets', { params });
     },
 
     /**
      * Create a new budget
      */
     async createBudget(data: CreateBudgetData): Promise<ApiResponse<Budget>> {
-        return apiClient.post('/expenses/budgets', data);
+        return apiClient.post('/flower/budgets', data);
     },
 
     /**
      * Update an existing budget
      */
     async updateBudget(id: string, data: Partial<CreateBudgetData>): Promise<ApiResponse<Budget>> {
-        return apiClient.patch(`/expenses/budgets/${id}`, data);
+        return apiClient.patch(`/flower/budgets/${id}`, data);
     },
 
     /**
      * Delete a budget
      */
     async deleteBudget(id: string): Promise<ApiResponse<null>> {
-        return apiClient.delete(`/expenses/budgets/${id}`);
+        return apiClient.delete(`/flower/budgets/${id}`);
     },
 };

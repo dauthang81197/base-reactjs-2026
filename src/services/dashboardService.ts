@@ -27,6 +27,6 @@ export const dashboardService = {
      * @returns Dashboard overview with totals, charts, and recent transactions
      */
     async getOverview(params?: DashboardParams): Promise<ApiResponse<DashboardOverview>> {
-        return apiClient.get('/expenses/dashboard/overview', { params });
+        return apiClient.get('/flower/dashboard/overview', { params });
     },
 };

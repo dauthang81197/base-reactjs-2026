@@ -24,14 +24,14 @@ export const walletService = {
    * Get all wallets
    */
   async getWallets(): Promise<ApiResponse<Wallet[]>> {
-    return apiClient.get('/expenses/wallets');
+    return apiClient.get('/flower/wallets');
   },
 
   /**
    * Get single wallet by ID
    */
   async getWallet(id: string): Promise<ApiResponse<Wallet>> {
-    return apiClient.get(`/expenses/wallets/${id}`);
+    return apiClient.get(`/flower/wallets/${id}`);
   },
 
   /**
@@ -45,21 +45,21 @@ export const walletService = {
    * Create a new wallet
    */
   async createWallet(data: CreateWalletData): Promise<ApiResponse<Wallet>> {
-    return apiClient.post('/expenses/wallets', data);
+    return apiClient.post('/flower/wallets', data);
   },
 
   /**
    * Update wallet (partial update)
    */
   async updateWallet(id: string, data: Partial<CreateWalletData>): Promise<ApiResponse<Wallet>> {
-    return apiClient.patch(`/expenses/wallets/${id}`, data);
+    return apiClient.patch(`/flowers/wallets/${id}`, data);
   },
 
   /**
    * Delete wallet
    */
   async deleteWallet(id: string): Promise<ApiResponse<null>> {
-    return apiClient.delete(`/expenses/wallets/${id}`);
+    return apiClient.delete(`/flower/wallets/${id}`);
   },
 };
 

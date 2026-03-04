@@ -17,35 +17,35 @@ export const categoryService = {
    * Optional filter by type: INCOME | EXPENSE
    */
   async getCategories(type?: TransactionType | 'INCOME' | 'EXPENSE'): Promise<ApiResponse<Category[]>> {
-    return apiClient.get('/expenses/categories', { params: type ? { type: type.toUpperCase() } : undefined });
+    return apiClient.get('/flower/categories', { params: type ? { type: type.toUpperCase() } : undefined });
   },
 
   /**
    * Get categories by type (INCOME or EXPENSE)
    */
   async getCategoriesByType(type: 'income' | 'expense' | 'INCOME' | 'EXPENSE'): Promise<ApiResponse<Category[]>> {
-    return apiClient.get('/expenses/categories', { params: { type: type.toUpperCase() } });
+    return apiClient.get('/flower/categories', { params: { type: type.toUpperCase() } });
   },
 
   /**
    * Create a new category
    */
   async createCategory(data: CreateCategoryData): Promise<ApiResponse<Category>> {
-    return apiClient.post('/expenses/categories', data);
+    return apiClient.post('/flower/categories', data);
   },
 
   /**
    * Update category (partial update)
    */
   async updateCategory(id: string, data: Partial<CreateCategoryData>): Promise<ApiResponse<Category>> {
-    return apiClient.patch(`/expenses/categories/${id}`, data);
+    return apiClient.patch(`/flower/categories/${id}`, data);
   },
 
   /**
    * Delete category
    */
   async deleteCategory(id: string): Promise<ApiResponse<null>> {
-    return apiClient.delete(`/expenses/categories/${id}`);
+    return apiClient.delete(`/flower/categories/${id}`);
   },
 };
 

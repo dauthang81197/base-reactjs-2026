@@ -35,14 +35,14 @@ export const transactionService = {
   async getTransactions(
     filters?: TransactionFilters
   ): Promise<ApiResponse<PaginatedResponse<Transaction>>> {
-    return apiClient.get('/expenses/transactions', { params: filters });
+    return apiClient.get('/flower/transactions', { params: filters });
   },
 
   /**
    * Get single transaction by ID
    */
   async getTransaction(id: string): Promise<ApiResponse<Transaction>> {
-    return apiClient.get(`/expenses/transactions/${id}`);
+    return apiClient.get(`/flower/transactions/${id}`);
   },
 
   /**
@@ -51,21 +51,21 @@ export const transactionService = {
    * - If type = INCOME → wallet balance is increased
    */
   async createTransaction(data: CreateTransactionData): Promise<ApiResponse<Transaction>> {
-    return apiClient.post('/expenses/transactions', data);
+    return apiClient.post('/flower/transactions', data);
   },
 
   /**
    * Update transaction (partial update)
    */
   async updateTransaction(id: string, data: Partial<CreateTransactionData>): Promise<ApiResponse<Transaction>> {
-    return apiClient.patch(`/expenses/transactions/${id}`, data);
+    return apiClient.patch(`/flower/transactions/${id}`, data);
   },
 
   /**
    * Delete transaction
    */
   async deleteTransaction(id: string): Promise<ApiResponse<null>> {
-    return apiClient.delete(`/expenses/transactions/${id}`);
+    return apiClient.delete(`/flower/transactions/${id}`);
   },
 };
 
