@@ -280,7 +280,29 @@ export const useTaskStore = create<TaskStore>()((set, get) => ({
     try {
       const response = await taskService.getDashboard();
       if (response.success && response.data) {
-        set({ dashboardData: response.data, loading: false });
+        // Normalize raw API response → UI-friendly shape
+        const raw = response.data as any;
+        const stats = raw.stats ?? raw;
+        const cr = raw.completionRate ?? {};
+        const pb = raw.priorityBreakdown ?? {};
+        const normalized: TaskDashboardData = {
+          total: stats.total ?? 0,
+          todo: stats.todo ?? 0,
+          inProgress: stats.inProgress ?? 0,
+          done: stats.done ?? cr.completed ?? 0,
+          overdue: stats.overdue ?? 0,
+          completionRate: typeof cr === 'object' ? (cr.percentage ?? 0) : (cr ?? 0),
+          totalEstimatedMinutes: cr.totalEstimatedMinutes ?? stats.totalEstimatedMinutes ?? 0,
+          todayTasks: cr.todayTasks ?? stats.todayTasks ?? 0,
+          priorityBreakdown: {
+            high: typeof pb.high === 'object' ? (pb.high?.count ?? 0) : (pb.high ?? 0),
+            medium: typeof pb.medium === 'object' ? (pb.medium?.count ?? 0) : (pb.medium ?? 0),
+            low: typeof pb.low === 'object' ? (pb.low?.count ?? 0) : (pb.low ?? 0),
+          },
+          upcomingDeadlines: raw.upcomingDeadlines ?? [],
+          tagsOverview: raw.tagsOverview ?? [],
+        };
+        set({ dashboardData: normalized, loading: false });
       } else {
         set({ loading: false, error: 'Failed to fetch dashboard' });
       }

@@ -38,6 +38,26 @@ export interface TaskSettings {
 
 // ── API Response Types ────────────────────────────────────────────────────────
 
+/** Raw shape returned from GET /flower/tasks/dashboard */
+export interface TaskDashboardApiResponse {
+  percentage: number;
+  completed: number;
+  total: number;
+  totalEstimatedMinutes: number;
+  todayTasks: number;
+  todo?: number;
+  inProgress?: number;
+  overdue?: number;
+  priorityBreakdown?: {
+    high: number;
+    medium: number;
+    low: number;
+  };
+  upcomingDeadlines?: Task[];
+  tagsOverview?: Array<TaskTag & { taskCount: number }>;
+}
+
+/** Normalized dashboard data used by the UI */
 export interface TaskDashboardData {
   total: number;
   todo: number;
@@ -46,6 +66,7 @@ export interface TaskDashboardData {
   overdue: number;
   completionRate: number;
   totalEstimatedMinutes: number;
+  todayTasks: number;
   priorityBreakdown: {
     high: number;
     medium: number;

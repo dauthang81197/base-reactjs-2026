@@ -45,17 +45,24 @@ export interface UpdateTagData {
 
 // ── Dashboard Response Types ──────────────────────────────────────────────────
 export interface TaskDashboardStats {
-  total: number;
-  todo: number;
-  inProgress: number;
-  done: number;
-  overdue: number;
-  completionRate: number;
-  totalEstimatedMinutes: number;
+  stats: {
+    total: number;
+    todo: number;
+    inProgress: number;
+    done: number;
+    overdue: number;
+  };
+  completionRate: {
+    percentage: number;
+    completed: number;
+    total: number;
+    totalEstimatedMinutes: number;
+    todayTasks: number;
+  };
   priorityBreakdown: {
-    high: number;
-    medium: number;
-    low: number;
+    high: { count: number; percentage: number };
+    medium: { count: number; percentage: number };
+    low: { count: number; percentage: number };
   };
   upcomingDeadlines: Task[];
   tagsOverview: Array<TaskTag & { taskCount: number }>;
