@@ -11,6 +11,13 @@ import {
 } from './features/Expenses';
 import { FileManagerPage } from './features/FileManager';
 import { NotesPage } from './features/Notes';
+import {
+  TaskListPage,
+  TagListPage,
+  TodayTasksPage,
+  TaskDashboardPage,
+  TaskSettingsPage,
+} from './features/Tasks';
 import { NotFound } from './pages/NotFound';
 import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 
@@ -38,7 +45,6 @@ const PlaceholderPage = ({ title }: { title: string }) => (
   </div>
 );
 
-const TasksPage = () => <PlaceholderPage title="Tasks" />;
 const EcommercePage = () => <PlaceholderPage title="E-Commerce" />;
 const MailPage = () => <PlaceholderPage title="Mail" />;
 const ChatPage = () => <PlaceholderPage title="Chat" />;
@@ -79,7 +85,15 @@ function AppRouter() {
         {/* ── Protected Routes (Main Layout) ── */}
         <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/tasks" element={<TasksPage />} />
+
+          {/* ── Task routes ── */}
+          <Route path="/tasks" element={<Navigate to="/tasks/dashboard" replace />} />
+          <Route path="/tasks/dashboard" element={<TaskDashboardPage />} />
+          <Route path="/tasks/list" element={<TaskListPage />} />
+          <Route path="/tasks/today" element={<TodayTasksPage />} />
+          <Route path="/tasks/tags" element={<TagListPage />} />
+          <Route path="/tasks/settings" element={<TaskSettingsPage />} />
+
           <Route path="/ecommerce" element={<EcommercePage />} />
           <Route path="/calendar" element={<CalendarPage />} />
 
