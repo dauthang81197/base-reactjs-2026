@@ -15,6 +15,26 @@ import type {
 } from '../features/Tasks/types';
 import type { TaskTag } from '../features/Tasks/types';
 
+// ── Raw API Response Type ─────────────────────────────────────────────────────
+interface RawDashboardResponse {
+  stats?: { total?: number; todo?: number; inProgress?: number; done?: number; overdue?: number; totalEstimatedMinutes?: number; todayTasks?: number };
+  total?: number;
+  todo?: number;
+  inProgress?: number;
+  done?: number;
+  overdue?: number;
+  totalEstimatedMinutes?: number;
+  todayTasks?: number;
+  completionRate?: { percentage?: number; completed?: number; totalEstimatedMinutes?: number; todayTasks?: number } | number;
+  priorityBreakdown?: {
+    high?: { count?: number } | number;
+    medium?: { count?: number } | number;
+    low?: { count?: number } | number;
+  };
+  upcomingDeadlines?: Task[];
+  tagsOverview?: TagWithCount[];
+}
+
 // ── Store Interface ───────────────────────────────────────────────────────────
 interface TaskStore {
   // State
@@ -281,19 +301,20 @@ export const useTaskStore = create<TaskStore>()((set, get) => ({
       const response = await taskService.getDashboard();
       if (response.success && response.data) {
         // Normalize raw API response → UI-friendly shape
-        const raw = response.data as any;
+        const raw = response.data as RawDashboardResponse;
         const stats = raw.stats ?? raw;
         const cr = raw.completionRate ?? {};
+        const crObj = typeof cr === 'object' ? cr : {};
         const pb = raw.priorityBreakdown ?? {};
         const normalized: TaskDashboardData = {
           total: stats.total ?? 0,
           todo: stats.todo ?? 0,
           inProgress: stats.inProgress ?? 0,
-          done: stats.done ?? cr.completed ?? 0,
+          done: stats.done ?? crObj.completed ?? 0,
           overdue: stats.overdue ?? 0,
           completionRate: typeof cr === 'object' ? (cr.percentage ?? 0) : (cr ?? 0),
-          totalEstimatedMinutes: cr.totalEstimatedMinutes ?? stats.totalEstimatedMinutes ?? 0,
-          todayTasks: cr.todayTasks ?? stats.todayTasks ?? 0,
+          totalEstimatedMinutes: crObj.totalEstimatedMinutes ?? stats.totalEstimatedMinutes ?? 0,
+          todayTasks: crObj.todayTasks ?? stats.todayTasks ?? 0,
           priorityBreakdown: {
             high: typeof pb.high === 'object' ? (pb.high?.count ?? 0) : (pb.high ?? 0),
             medium: typeof pb.medium === 'object' ? (pb.medium?.count ?? 0) : (pb.medium ?? 0),
