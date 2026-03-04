@@ -71,7 +71,7 @@ interface TaskStore {
 
   // Dashboard & Today (async)
   fetchDashboard: () => Promise<void>;
-  fetchTodayTasks: () => Promise<void>;
+  fetchTodayTasks: (date: Date) => Promise<void>;
 
   // Settings (async)
   fetchSettings: () => Promise<void>;
@@ -96,7 +96,7 @@ const DEFAULT_SETTINGS: TaskSettings = {
   defaultView: 'list',
   showCompletedTasks: true,
   autoArchiveDays: 30,
-  defaultPriority: 'medium',
+  defaultPriority: 'MEDIUM',
 };
 
 // ── Store ─────────────────────────────────────────────────────────────────────
@@ -127,10 +127,11 @@ export const useTaskStore = create<TaskStore>()((set, get) => ({
       if (currentFilters.tagId && currentFilters.tagId !== 'all') params.tagId = currentFilters.tagId;
 
       const response = await taskService.getTasks(params);
+
       if (response.success && response.data) {
         const paginated = response.data;
         set({
-          tasks: paginated.data,
+          tasks: paginated.items || [],
           totalTasks: paginated.total,
           currentPage: paginated.page,
           totalPages: paginated.pages,
@@ -333,10 +334,10 @@ export const useTaskStore = create<TaskStore>()((set, get) => ({
   },
 
   // ── Fetch Today Tasks ──────────────────────────────────────────
-  fetchTodayTasks: async () => {
+  fetchTodayTasks: async (date: Date) => {
     set({ loading: true, error: null });
     try {
-      const response = await taskService.getTodayTasks();
+      const response = await taskService.getTodayTasks(date);
       if (response.success && response.data) {
         set({ todayData: response.data, loading: false });
       } else {

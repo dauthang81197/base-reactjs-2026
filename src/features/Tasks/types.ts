@@ -1,7 +1,7 @@
 // ── Task Feature Types ─────────────────────────────────────────────────────────
 
-export type TaskStatus = 'todo' | 'in-progress' | 'done' | 'overdue';
-export type TaskPriority = 'low' | 'medium' | 'high';
+export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE' | 'OVERDUE';
+export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export interface TaskTag {
   id: string;
@@ -93,29 +93,29 @@ export interface TagWithCount extends TaskTag {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 export const TASK_STATUS_OPTIONS: { value: TaskStatus; label: string }[] = [
-  { value: 'todo', label: 'Todo' },
-  { value: 'in-progress', label: 'In Progress' },
-  { value: 'done', label: 'Done' },
-  { value: 'overdue', label: 'Overdue' },
+  { value: 'TODO', label: 'Todo' },
+  { value: 'IN_PROGRESS', label: 'In Progress' },
+  { value: 'DONE', label: 'Done' },
+  { value: 'OVERDUE', label: 'Overdue' },
 ];
 
 export const TASK_PRIORITY_OPTIONS: { value: TaskPriority; label: string }[] = [
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
+  { value: 'LOW', label: 'Low' },
+  { value: 'MEDIUM', label: 'Medium' },
+  { value: 'HIGH', label: 'High' },
 ];
 
 export const STATUS_COLOR_MAP: Record<TaskStatus, string> = {
-  'todo': 'neutral',
-  'in-progress': 'info',
-  'done': 'success',
-  'overdue': 'danger',
+  'TODO': 'neutral',
+  'IN_PROGRESS': 'info',
+  'DONE': 'success',
+  'OVERDUE': 'danger',
 };
 
 export const PRIORITY_COLOR_MAP: Record<TaskPriority, string> = {
-  low: 'success',
-  medium: 'warning',
-  high: 'danger',
+  'LOW': 'success',
+  'MEDIUM': 'warning',
+  'HIGH': 'danger',
 };
 
 export const DEFAULT_TAG_COLORS = [
