@@ -64,16 +64,15 @@ const TaskListPage: React.FC = () => {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [searchDebounce, setSearchDebounce] = useState(filters.search || '');
   console.log(tasks, "adsflkj")
-  // Fetch tasks and tags on mount
+  // Fetch tags once on mount
   useEffect(() => {
-    fetchTasks();
     fetchTags();
-  }, [fetchTasks, fetchTags]);
+  }, [fetchTags]);
 
-  // Re-fetch when filters change (except search, which is debounced)
+  // Fetch tasks on mount and when filters change
   useEffect(() => {
     fetchTasks();
-  }, [filters.status, filters.priority, filters.tagId, fetchTasks]);
+  }, [fetchTasks, filters.status, filters.priority, filters.tagId]);
 
   // Debounce search
   useEffect(() => {

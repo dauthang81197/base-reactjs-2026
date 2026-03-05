@@ -117,6 +117,14 @@ const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ message, onRetry }) => (
     </div>
 );
 
+// ── Category color palette (fallback when backend doesn't return color) ────────
+const CATEGORY_COLORS = [
+    '#6366F1', '#10B981', '#F59E0B', '#EF4444', '#3B82F6',
+    '#8B5CF6', '#EC4899', '#14B8A6', '#F97316', '#84CC16',
+];
+const getCategoryColor = (color: string | undefined, index: number) =>
+    color || CATEGORY_COLORS[index % CATEGORY_COLORS.length];
+
 // ── VND Exchange Rate ─────────────────────────────────────────────────────────
 const USD_TO_VND = 26000;
 
@@ -175,7 +183,7 @@ const ExpenseOverviewPage: React.FC = () => {
 
     const conv = (amount: number) => isVND ? amount * USD_TO_VND : amount;
     const fmt = (amount: number) => isVND ? formatVND(conv(amount)) : formatCurrency(amount);
-
+    console.log(data, "dashboard data")
     return (
         <div className="space-y-6">
             {/* Page Header */}
@@ -359,7 +367,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                     nameKey="categoryName"
                                 >
                                     {data.expenseByCategory.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                        <Cell key={`cell-${index}`} fill={getCategoryColor(entry.color, index)} />
                                     ))}
                                 </Pie>
                                 <Tooltip
@@ -386,12 +394,12 @@ const ExpenseOverviewPage: React.FC = () => {
                         </h3>
                     </CardHeader>
                     <CardBody className="space-y-3">
-                        {(data.topCategories || []).slice(0, 5).map((cat) => (
+                        {(data.topCategories || []).slice(0, 5).map((cat, index) => (
                             <div key={cat.categoryId} className="flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div
                                         className="h-3 w-3 rounded-full"
-                                        style={{ backgroundColor: cat.color }}
+                                        style={{ backgroundColor: getCategoryColor(cat.color, index) }}
                                     />
                                     <span className="text-sm text-neutral-700 dark:text-neutral-300">
                                         {cat.categoryName}
@@ -399,7 +407,7 @@ const ExpenseOverviewPage: React.FC = () => {
                                 </div>
                                 <div className="text-right">
                                     <p className="text-sm font-medium text-neutral-900 dark:text-white">
-                                        {fmt(cat.amount)}
+                                        {fmt(cat.total)}
                                     </p>
                                     <p className="text-xs text-neutral-500">{cat.percentage}%</p>
                                 </div>

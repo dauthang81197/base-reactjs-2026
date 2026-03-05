@@ -164,8 +164,6 @@ export const useTaskStore = create<TaskStore>()((set, get) => ({
     try {
       const response = await taskService.createTask(data);
       if (response.success && response.data) {
-        // Refresh tasks list
-        await get().fetchTasks();
         set({ loading: false });
         return response.data;
       }
