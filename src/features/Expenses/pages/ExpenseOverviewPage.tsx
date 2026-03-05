@@ -407,9 +407,9 @@ const ExpenseOverviewPage: React.FC = () => {
                                 </div>
                                 <div className="text-right">
                                     <p className="text-sm font-medium text-neutral-900 dark:text-white">
-                                        {fmt(cat.total)}
+                                        {fmt(cat.total ?? 0)}
                                     </p>
-                                    <p className="text-xs text-neutral-500">{cat.percentage}%</p>
+                                    <p className="text-xs text-neutral-500">{cat.percentage ?? 0}%</p>
                                 </div>
                             </div>
                         ))}
