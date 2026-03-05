@@ -68,7 +68,7 @@ export interface CategorySummary {
     amount: number;
     percentage: number;
     transactionCount: number;
-    total: number;
+    total?: number;
 }
 
 export interface MonthlyTrend {
