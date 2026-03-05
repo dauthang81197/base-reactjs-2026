@@ -64,10 +64,11 @@ export interface ExpenseSummary {
 export interface CategorySummary {
     categoryId: string;
     categoryName: string;
-    color: string;
+    color?: string;
     amount: number;
     percentage: number;
     transactionCount: number;
+    total: number;
 }
 
 export interface MonthlyTrend {

@@ -18,8 +18,8 @@ interface TaskModalProps {
 const emptyForm = {
   title: '',
   description: '',
-  status: 'todo' as TaskStatus,
-  priority: 'medium' as TaskPriority,
+  status: 'TODO' as TaskStatus,
+  priority: 'MEDIUM' as TaskPriority,
   dueDate: new Date().toISOString().split('T')[0],
   tags: [] as string[],
   estimatedTime: 30,
@@ -30,6 +30,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ open, onClose, task }) => 
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = React.useRef(false);
 
   const isEdit = Boolean(task);
 
@@ -62,8 +63,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({ open, onClose, task }) => 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submittingRef.current) return;
     if (!validate()) return;
 
+    submittingRef.current = true;
     setSubmitting(true);
     try {
       if (isEdit && task) {
@@ -91,6 +94,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ open, onClose, task }) => 
     } catch {
       // Error is handled in store
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   };
